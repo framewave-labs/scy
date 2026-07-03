@@ -157,7 +157,7 @@ summary_target: true
 | `prompt_guide` | `content/01_기획/2026-06-24_프롬프트_가이드_초안.md` |
 | `role_plan` | `content/01_기획/2026-06-24_역할별_1주차_작업.md` |
 | `cost` | `content/02_리서치/2026-06-25_API_비용_산정.md` |
-| `engineering` | `content/03_엔지니어링/2026-06-30_A2팀_API_DB_배포_검토.md` |
+| `engineering` | `content/03_엔지니어링/2026-07-03_A2팀_API_DB_명세서.md` |
 | `qa` | `content/04_QA/2026-06-30_A2팀_QA_평가_기준.md` |
 | `risk` | `content/04_QA/2026-06-30_A2팀_리스크_및_오픈이슈.md` |
 
