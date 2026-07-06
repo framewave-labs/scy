@@ -1,0 +1,40 @@
+name: Daily scrum briefing
+
+on:
+  schedule:
+    # KST 07:00 월~금 (UTC 22:00 일~목)
+    - cron: "0 22 * * 0-4"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  scrum:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build scrum briefing
+        run: node scripts/build-scrum.mjs
+        env:
+          TZ: Asia/Seoul
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "content/07_스크럼/오늘의_스크럼.md"
+          if git diff --cached --quiet; then
+            echo "No changes."
+            exit 0
+          fi
+          git commit -m "docs: daily scrum briefing $(TZ=Asia/Seoul date +%Y-%m-%d)"
+          git push
