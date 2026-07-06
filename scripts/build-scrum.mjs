@@ -86,6 +86,24 @@ sections.push(`## 문서 바로가기
 | [주차별 마일스톤](${encodeURI(`../01_기획/${milestoneFile ?? ""}`)}) | 주차 목표·리스크 |
 | [문서 통합 사이트](https://framewave-labs.github.io/framewave-docs/) | 팀 전체 필독·최종본 |`);
 
+// 5. 회의록용 참고 문서 블록 — 오늘 브리핑에 포함된 문서를 회의록의 "참고 문서" 섹션에 그대로 복사해 쓴다
+const refDocs = [
+  checklistFile && `| \`${checklistFile}\` |  |`,
+  meetingFile && `| \`${meetingFile}\` |  |`,
+  milestoneFile && `| \`${milestoneFile}\` |  |`,
+].filter(Boolean);
+sections.push(`## 회의록용 참고 문서 블록
+
+오늘 회의록을 쓸 때 아래 표를 "참고 문서" 섹션에 복사하고, 오늘 실제로 참고한 문서만 남긴 뒤 오른쪽 칸을 채운다. 오늘 새로 참고한 문서가 있으면 행을 추가한다.
+
+\`\`\`markdown
+## 참고 문서
+
+| 문서 | 오늘 참고/반영한 내용 |
+| --- | --- |
+${refDocs.join("\n")}
+\`\`\``);
+
 const doc = `---
 title: 오늘의 스크럼
 author: scy
