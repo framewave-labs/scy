@@ -1,7 +1,7 @@
 ---
 title: A2팀 PM 사전 체크리스트
 author: scy
-category: 01_기획
+category: 06_참고자료
 status: superseded
 created: 2026-06-26
 updated: 2026-06-30
