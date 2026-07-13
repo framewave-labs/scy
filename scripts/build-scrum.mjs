@@ -50,37 +50,9 @@ if (checklistFile) {
   if (today) sections.push(`## 오늘 할 일\n\n${today.replace(/^### .*\n?/, "").trim()}\n\n> 출처: [일일 작업 체크리스트](${encodeURI(link)})`);
 }
 
-// 2. 액션 아이템 — 07-06 이후 회의록들에서, 상태가 정확히 "완료"가 아닌 항목만 모은다.
-// (그 이전 회의록은 미완료로 방치된 옛 항목이 섞여 노이즈가 되므로 스캔 범위에서 제외한다)
+// 2. 최신 회의록 파일명 — 문서 바로가기/참고 문서 블록에서 사용
 const meetingDir = path.join(CONTENT, "05_회의록");
 const meetingFile = latest(meetingDir, /^A2팀_\d{4}-\d{2}-\d{2}_회의록\.md$/);
-const SCAN_FROM = "2026-07-06";
-const meetingFiles = fs.readdirSync(meetingDir)
-  .filter(f => /^A2팀_\d{4}-\d{2}-\d{2}_회의록\.md$/.test(f))
-  .filter(f => f.match(/\d{4}-\d{2}-\d{2}/)[0] >= SCAN_FROM)
-  .sort();
-
-function pendingActionRows(text) {
-  const section = extract(text, /^## 액션 아이템/, /^## /);
-  if (!section) return [];
-  return section.split("\n")
-    .filter(l => l.startsWith("|"))
-    .slice(2) // 헤더, 구분선 제외
-    .map(l => l.split("|").slice(1, -1).map(c => c.trim()))
-    .filter(cols => cols.length >= 4 && !cols[3].replace(/\*\*/g, "").trim().startsWith("완료"));
-}
-
-const pendingActions = meetingFiles.flatMap(file =>
-  pendingActionRows(read(path.join(meetingDir, file))).map(cols => ({ file, cols })));
-
-if (pendingActions.length) {
-  const rows = pendingActions.map(({ file, cols }) => {
-    const label = file.replace("A2팀_", "").replace("_회의록.md", "");
-    const link = encodeURI(`../05_회의록/${file}`);
-    return `| ${cols[0]} | ${cols[1]} | ${cols[2]} | ${cols[3]} | [${label}](${link}) |`;
-  });
-  sections.push(`## 액션 아이템 (미완료, ${SCAN_FROM} 이후 회의록)\n\n| 담당자 | 할 일 | 기한 | 상태 | 출처 |\n| --- | --- | --- | --- | --- |\n${rows.join("\n")}`);
-}
 
 // 3. 마일스톤 — 오늘 해당하는 리스크 체크포인트
 const milestoneFile = latest(checklistDir, /주차별_마일스톤.*\.md$/);
